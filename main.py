@@ -66,7 +66,7 @@ def createLDLA(file):
     ldlda.CARAS = caras
     return ldlda
 
-def searchVertices(aristas, arista):
+def searchVertices(arista):
     segments = []
     actualArista = None
     actual = arista
@@ -84,26 +84,21 @@ def createSegments(ldlda):
     for i in ldlda.CARAS:
         if len(ldlda.CARAS[i].cmpint) >= 1:
             for interno in ldlda.CARAS[i].cmpint:
-                totalSegments.append(searchVertices(ldlda.ARISTAS, interno))
+                totalSegments.extend(searchVertices(interno))
         if len(ldlda.CARAS[i].cmpext) >= 1:
             for externo in ldlda.CARAS[i].cmpext:
-                totalSegments.append(searchVertices(ldlda.ARISTAS, externo))
+                totalSegments.extend(searchVertices(externo))
     return totalSegments
 
 def main():
     ver01 = createLDLA("layer01")
-    segs01 = createSegments(ver01)
+    segs = createSegments(ver01)
+    print(type(segs[0]))
     ver02 = createLDLA("layer02")
-    segs02 = createSegments(ver02)
-
-
-
-    for s in segs02:
-      print(s)
-    
-    '''barr = AlgoritmoBarrido(segmentos)
+    segs.extend(createSegments(ver02))
+    barr = AlgoritmoBarrido(segs)
     barr.barrer()
-    print(barr.R)'''
+    print(barr.R)
 
 if __name__=="__main__":
     main()
