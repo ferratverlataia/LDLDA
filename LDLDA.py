@@ -1,9 +1,9 @@
 from Punto import Punto
 class LDLA:
     def __init__(self):
-        self.VERTICES = list()
-        self.CARAS = list()
-        self.ARISTAS = list()
+        self.VERTICES = dict()
+        self.CARAS = dict()
+        self.ARISTAS = dict()
 
 class vertice:
     def __init__(self, x, y):
