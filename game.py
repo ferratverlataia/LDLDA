@@ -7,11 +7,48 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
+colors = [(0, 0, 255), (0, 255, 0), (255, 0, 0), (171, 171, 171)]
+indexColor = 0
 def pygame_init():
     pygame.init()
     windowSurface = pygame.display.set_mode((500, 400), 0, 32)
     pygame.display.set_caption('Hello world!')
     return windowSurface
+
+def drawCara(windowSurface, cara):
+    global colors, indexColor
+    arista = cara
+    actual = None
+    other = arista
+
+    while arista != actual:
+        actual = other.siguiente
+        origin = other.origin.coord
+        coords = actual.origin.coord
+        pygame.draw.line(windowSurface, colors[indexColor], (origin.x * 20, origin.y * 20),
+                         (coords.x * 20, coords.y * 20), 4)
+        other = actual
+    indexColor += 1
+    if indexColor == len(colors):
+        indexColor = 0
+
+def printPoints(windowSurface, ldlda, linea):
+    windowSurface.fill(WHITE)
+    pygame.draw.line(windowSurface, RED, (0, linea.y*20), (500, linea.y*20), 4)
+    print(linea.x, linea.y)
+
+    for i in ldlda:
+        caras = i.CARAS
+        for key in caras:
+            cara = caras[key]
+            if cara.cmpint:
+                for cmp in cara.cmpint:
+                    drawCara(windowSurface, cmp)
+            if cara.cmpext:
+                for cmp in cara.cmpext:
+                    drawCara(windowSurface, cmp)
+
+
 
 def pygame_drawtest(windowSurface):
     # set up fonts
@@ -53,14 +90,6 @@ def pygame_drawtest(windowSurface):
     
 def pygame_loop(windowSurface):
     pygame.display.update()
-    while True:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
+    return
 
-
-
-
-# draw the window onto the screen
 
