@@ -1,6 +1,7 @@
 from algoritmo import AlgoritmoBarrido
 from Punto import Punto
 from Segmento import Segmento
+from game import *
 import LDLDA
 BREAKLINE = 4
 
@@ -99,6 +100,10 @@ def main():
     barr = AlgoritmoBarrido(segs)
     barr.barrer()
     print(barr.R)
+    window=pygame_init()
+    pygame_drawtest(window)
+    pygame_loop(window)
+    
 
 if __name__=="__main__":
     main()
