@@ -2,7 +2,7 @@ from algoritmo import AlgoritmoBarrido
 from Punto import Punto
 from Segmento import Segmento
 from game import *
-import LDLDA
+from LDLDA import *
 BREAKLINE = 4
 
 def createLDLA(file):
@@ -99,7 +99,45 @@ def main():
     segs.extend(createSegments(ver02))
     barr = AlgoritmoBarrido(segs)
     barr.barrer()
-    print(barr.R)
+    #print(barr.R)
+  
+    layerlist=list()
+    for i in range(0,len(barr.R)-1,2):
+        generatedlayer= LDLDA()
+        puntodecruze=barr.R[i]
+        cruzevertice=vertice(puntodecruze[0],puntodecruze[1])
+        layerlist.append(cruzevertice)
+        listadepuntos=barr.R[i+1]
+        caragenerada=cara()
+        for punto in listadepuntos:
+            pointkey=""
+            for vert in ver01.VERTICES:
+                if vert[1].coord== Punto(punto[0],punto[1]):
+                    pointkey=vert[0]
+            for vert in ver02.VERTICES:
+                if vert[1].coord== Punto(punto[0],punto[1]):
+                    pointkey=vert[0]
+            
+            verdepuntos= vertice(punto[0],punto[1])
+            aristagenerada=arista(cruzevertice)
+            artistagenerada.siguiente=verdepuntos
+            caragenerada.cmpint.append(verdepuntos)
+            caragenerada.cmpext.append(verdepuntos)
+            generatedlayer.VERTICES.put(pointkey,verdepuntos)
+
+        layerlist.append(generatedlayer)
+
+
+        
+        
+                    
+
+
+
+                
+            
+
+
     window=pygame_init()
     pygame_drawtest(window)
     pygame_loop(window)
