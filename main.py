@@ -3,6 +3,7 @@ from Punto import Punto
 from Segmento import Segmento
 from game import *
 from LDLDA import *
+import  LDLDA
 BREAKLINE = 4
 
 def createLDLA(file):
@@ -117,13 +118,13 @@ def main():
             for vert in ver02.VERTICES:
                 if vert[1].coord== Punto(punto[0],punto[1]):
                     pointkey=vert[0]
-            
             verdepuntos= vertice(punto[0],punto[1])
             aristagenerada=arista(cruzevertice)
             artistagenerada.siguiente=verdepuntos
             caragenerada.cmpint.append(verdepuntos)
             caragenerada.cmpext.append(verdepuntos)
             generatedlayer.VERTICES.put(pointkey,verdepuntos)
+            
 
         layerlist.append(generatedlayer)
 
