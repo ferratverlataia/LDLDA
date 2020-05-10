@@ -4,6 +4,7 @@ from Segmento import Segmento
 from game import *
 from LDLDA import *
 import  LDLDA
+from sutherland import *
 BREAKLINE = 4
 
 def createLDLA(file):
@@ -92,56 +93,52 @@ def createSegments(ldlda):
                 totalSegments.extend(searchVertices(externo))
     return totalSegments
 
+def getCara(cara):
+    arista = cara
+    actual = None
+    other = arista
+    points = []
+    while arista != actual:
+        actual = other.siguiente
+        origin = other.origin.coord
+        points.append((origin.x, origin.y))
+
+        other = actual
+    return points
+
+def getPoints(layer):
+    points = []
+    caras = layer.CARAS
+    for key in caras:
+        cara = caras[key]
+        if cara.cmpint:
+            for cmp in cara.cmpint:
+                points.extend(getCara(cmp))
+        if cara.cmpext:
+            for cmp in cara.cmpext:
+                points.extend(getCara(cmp))
+    return points
+
 def main():
     ver01 = createLDLA("layer01")
     segs = createSegments(ver01)
+    layers = []
+    layers.append(ver01)
     print(type(segs[0]))
     ver02 = createLDLA("layer02")
+    layers.append(ver02)
     segs.extend(createSegments(ver02))
     barr = AlgoritmoBarrido(segs)
     barr.barrer()
-    #print(barr.R)
-  
-    layerlist=list()
-    for i in range(0,len(barr.R)-1,2):
-        generatedlayer= LDLDA()
-        puntodecruze=barr.R[i]
-        cruzevertice=vertice(puntodecruze[0],puntodecruze[1])
-        layerlist.append(cruzevertice)
-        listadepuntos=barr.R[i+1]
-        caragenerada=cara()
-        for punto in listadepuntos:
-            pointkey=""
-            for vert in ver01.VERTICES:
-                if vert[1].coord== Punto(punto[0],punto[1]):
-                    pointkey=vert[0]
-            for vert in ver02.VERTICES:
-                if vert[1].coord== Punto(punto[0],punto[1]):
-                    pointkey=vert[0]
-            verdepuntos= vertice(punto[0],punto[1])
-            aristagenerada=arista(cruzevertice)
-            artistagenerada.siguiente=verdepuntos
-            caragenerada.cmpint.append(verdepuntos)
-            caragenerada.cmpext.append(verdepuntos)
-            generatedlayer.VERTICES.put(pointkey,verdepuntos)
-            
+    points1 = tuple(getPoints(ver01))
+    points2 = tuple(getPoints(ver02))
+    windowSurface = pygame_init()
+    while True:
+        printPoints(windowSurface, layers, None)
+        printIntersec(sutherland(points2, points1), windowSurface)
+        #printIntersec(sutherland(points1, points2), windowSurface)
+        pygame_loop(windowSurface)
 
-        layerlist.append(generatedlayer)
-
-
-        
-        
-                    
-
-
-
-                
-            
-
-
-    window=pygame_init()
-    pygame_drawtest(window)
-    pygame_loop(window)
     
 
 if __name__=="__main__":

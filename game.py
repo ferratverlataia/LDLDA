@@ -34,8 +34,8 @@ def drawCara(windowSurface, cara):
 
 def printPoints(windowSurface, ldlda, linea):
     windowSurface.fill(WHITE)
-    pygame.draw.line(windowSurface, RED, (0, linea.y*20), (500, linea.y*20), 4)
-    print(linea.x, linea.y)
+
+    if linea: pygame.draw.line(windowSurface, RED, (0, linea.y*20), (500, linea.y*20), 4)
 
     for i in ldlda:
         caras = i.CARAS
@@ -91,5 +91,12 @@ def pygame_drawtest(windowSurface):
 def pygame_loop(windowSurface):
     pygame.display.update()
     return
+
+def printIntersec(pts, windowSurface):
+    for i in pts:
+        for j in i:
+            for k in range(0, len(j), 2):
+
+                pygame.draw.circle(windowSurface, BLUE, (j[k]*20, j[k+1]*20), 4, 1)
 
 
